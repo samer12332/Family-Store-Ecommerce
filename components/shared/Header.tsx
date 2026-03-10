@@ -1,17 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ShoppingCart, Menu, X, Search } from "lucide-react";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { useCart } from "@/hooks/useCart";
 import { cn } from "@/lib/utils";
+import { SiteLogo } from "@/components/shared/SiteLogo";
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { getTotalItems } = useCart();
   const pathname = usePathname();
+  const router = useRouter();
 
   const navLinks = [
     { href: "/shop", label: "Shop" },
@@ -29,16 +30,7 @@ export function Header() {
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
-            <div className="flex items-center gap-1">
-              <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-                <span className="text-sm font-bold text-primary-foreground">FS</span>
-              </div>
-              <span className="hidden sm:inline font-semibold text-lg text-foreground">
-                FamilyStore
-              </span>
-            </div>
-          </Link>
+          <SiteLogo />
 
           {/* Navigation - Desktop */}
           <nav className="hidden md:flex items-center gap-8">
@@ -61,7 +53,12 @@ export function Header() {
 
           {/* Right Actions */}
           <div className="flex items-center gap-4">
-            <button className="p-2 hover:bg-muted rounded-lg transition-colors">
+            <button
+              type="button"
+              onClick={() => router.push("/shop?focusSearch=1")}
+              aria-label="Search products"
+              className="p-2 hover:bg-muted rounded-lg transition-colors"
+            >
               <Search className="w-5 h-5 text-foreground" />
             </button>
             <Link href="/cart" className="relative p-2">

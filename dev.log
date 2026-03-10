@@ -32579,3 +32579,10 @@ Error: Route "/api/orders/[id]" used `params.id`. `params` is a Promise and must
  GET /api/products/marseille-tracksuit-2 200 in 36ms (compile: 10ms, render: 27ms)
 (node:22436) [MONGOOSE] Warning: Duplicate schema index on {"slug":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
 (Use `node --trace-warnings ...` to show where the warning was created)
+ GET /cart 200 in 22ms (compile: 4ms, render: 19ms)
+ GET /checkout 200 in 21ms (compile: 3ms, render: 18ms)
+[v0] Using cached MongoDB connection
+(node:8276) [MONGOOSE] Warning: Duplicate schema index on {"slug":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+ POST /api/orders/shipping-estimate 200 in 123ms (compile: 53ms, render: 70ms)
+ GET /cart 200 in 19ms (compile: 2ms, render: 17ms)
+^C^C

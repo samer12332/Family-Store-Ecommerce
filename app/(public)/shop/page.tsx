@@ -1,10 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ProductCard } from "@/components/product/ProductCard";
 import { useApi } from "@/hooks/useApi";
 import { Spinner } from "@/components/ui/spinner";
 import { PRODUCT_CATEGORIES, GENDER_TYPES, AVAILABILITY_STATUS } from "@/lib/constants";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -28,21 +30,38 @@ interface Product {
 }
 
 export default function ShopPage() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [filters, setFilters] = useState({
-    category: "",
-    gender: "",
-    status: "",
-    search: "",
-  });
+  const [filters, setFilters] = useState(() => ({
+      category: searchParams.get("category") || "",
+      gender: searchParams.get("gender") || "",
+      status: searchParams.get("status") || "",
+      search: searchParams.get("search") || "",
+    }));
   const [pagination, setPagination] = useState({ page: 1, limit: 12 });
   const { get } = useApi();
 
   useEffect(() => {
     fetchProducts();
   }, [filters, pagination.page]);
+
+  useEffect(() => {
+    if (searchParams.get("focusSearch") === "1") {
+      searchInputRef.current?.focus();
+      searchInputRef.current?.select();
+
+      const params = new URLSearchParams(searchParams.toString());
+      params.delete("focusSearch");
+      router.replace(params.toString() ? `${pathname}?${params.toString()}` : pathname, {
+        scroll: false,
+      });
+    }
+  }, [pathname, router, searchParams]);
 
   const fetchProducts = async () => {
     try {
@@ -91,6 +110,20 @@ export default function ShopPage() {
           <aside className="lg:col-span-1">
             <div className="bg-card rounded-lg border border-border p-6 space-y-6">
               <h3 className="font-semibold text-foreground">Filters</h3>
+
+              <div className="space-y-2">
+                <label htmlFor="shop-search" className="text-sm font-medium text-foreground">
+                  Search
+                </label>
+                <Input
+                  id="shop-search"
+                  ref={searchInputRef}
+                  type="search"
+                  placeholder="Search by name or SKU"
+                  value={filters.search}
+                  onChange={(event) => handleFilterChange("search", event.target.value)}
+                />
+              </div>
 
               {/* Category Filter */}
               <div className="space-y-2">

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { ShoppingCart, Heart, Truck, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
+import { resolveColorHex } from "@/lib/color-swatches";
 
 interface Product {
   _id: string;
@@ -57,7 +58,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
       // Set default selections
       const resolvedColors = Array.isArray(resolvedProduct?.colors)
         ? resolvedProduct.colors.map((color: any) =>
-            typeof color === "string" ? { name: color, hex: "#d4d4d8" } : color
+            typeof color === "string" ? { name: color, hex: resolveColorHex(color) } : color
           )
         : [];
       const resolvedSizes =
@@ -136,7 +137,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
   const displayPrice = product.discountPrice || product.price;
   const normalizedColors = Array.isArray(product.colors)
     ? product.colors.map((color) =>
-        typeof color === "string" ? { name: color, hex: "#d4d4d8" } : color
+        typeof color === "string" ? { name: color, hex: resolveColorHex(color) } : color
       )
     : [];
   const resolvedSizes =

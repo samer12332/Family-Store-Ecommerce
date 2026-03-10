@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Mail, Phone, MapPin } from "lucide-react";
+import { SiteLogo } from "@/components/shared/SiteLogo";
 
 export function Footer() {
   return (
@@ -10,7 +11,9 @@ export function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           {/* Brand */}
           <div>
-            <h3 className="font-semibold text-lg mb-4">FamilyStore</h3>
+            <div className="mb-4">
+              <SiteLogo compact />
+            </div>
             <p className="text-sm opacity-70">
               Your trusted source for quality clothing, shoes, and accessories for the whole family.
             </p>

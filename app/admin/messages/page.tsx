@@ -52,7 +52,7 @@ export default function AdminMessages() {
         });
         const data = await get(`/messages?${query}`);
         setMessages(data.messages || []);
-        setTotalPages(Math.ceil((data.total || 0) / itemsPerPage));
+        setTotalPages(Math.max(1, data.pagination?.pages || Math.ceil((data.pagination?.total || 0) / itemsPerPage)));
       } catch (error) {
         console.error('[v0] Failed to fetch messages:', error);
       } finally {
@@ -221,7 +221,7 @@ export default function AdminMessages() {
                   <Button
                     variant="outline"
                     size="sm"
-                    disabled={currentPage === totalPages}
+                    disabled={currentPage >= totalPages}
                     onClick={() => setCurrentPage(currentPage + 1)}
                   >
                     <ChevronRight className="w-4 h-4" />
